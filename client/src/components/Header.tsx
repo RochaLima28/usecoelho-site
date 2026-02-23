@@ -59,13 +59,22 @@ export default function Header({ cartCount = 0, onCartClick, onLoginClick }: Hea
             </Link>
           )}
           
-          <button 
-            onClick={onLoginClick}
-            className="hidden md:flex items-center gap-2 px-4 py-2 text-gray-700 hover:text-gray-900 transition-colors font-medium"
-          >
-            <LogIn className="w-4 h-4" />
-            Login
-          </button>
+          {user && (
+            <Link href="/minha-conta" className="hidden md:flex items-center gap-2 px-4 py-2 text-gray-700 hover:text-gray-900 transition-colors font-medium">
+              <LogIn className="w-4 h-4" />
+              Minha Conta
+            </Link>
+          )}
+          
+          {!user && (
+            <button 
+              onClick={onLoginClick}
+              className="hidden md:flex items-center gap-2 px-4 py-2 text-gray-700 hover:text-gray-900 transition-colors font-medium"
+            >
+              <LogIn className="w-4 h-4" />
+              Login
+            </button>
+          )}
           
           <button 
             onClick={onCartClick}
