@@ -12,7 +12,7 @@ export default function Home() {
       name: 'Camiseta Casual Básica Preta',
       price: 25.90,
       wholesalePrice: 20.72,
-      image: 'https://private-us-east-1.manuscdn.com/sessionFile/0r6jkvqawVn7w6BI00vhuD/sandbox/2TtbtY53PAG1z4eb3KadEU-img-1_1771858604000_na1fn_Y2FtaXNldGEtcHJldGEtY2FzdWFs.png?x-oss-process=image/resize,w_1920,h_1920/format,webp/quality,q_80',
+      image: 'https://private-us-east-1.manuscdn.com/sessionFile/0r6jkvqawVn7w6BI00vhuD/sandbox/JE2HAJXqTIlL83cD7Ub7V1-img-1_1771858903000_na1fn_Y2FtaXNldGEtcHJldGEtY2FiaWRlaXJv.png?x-oss-process=image/resize,w_1920,h_1920/format,webp/quality,q_80',
       badge: 'Mais Vendido'
     },
     {
@@ -20,7 +20,7 @@ export default function Home() {
       name: 'Camiseta Casual Básica Azul Marinho',
       price: 25.90,
       wholesalePrice: 20.72,
-      image: 'https://private-us-east-1.manuscdn.com/sessionFile/0r6jkvqawVn7w6BI00vhuD/sandbox/2TtbtY53PAG1z4eb3KadEU-img-2_1771858603000_na1fn_Y2FtaXNldGEtYXp1bC1jYXN1YWw.png?x-oss-process=image/resize,w_1920,h_1920/format,webp/quality,q_80',
+      image: 'https://private-us-east-1.manuscdn.com/sessionFile/0r6jkvqawVn7w6BI00vhuD/sandbox/JE2HAJXqTIlL83cD7Ub7V1-img-2_1771858900000_na1fn_Y2FtaXNldGEtYXp1bC1jYWJpZGVpcm8.png?x-oss-process=image/resize,w_1920,h_1920/format,webp/quality,q_80',
       badge: 'Mais Vendido'
     },
     {
@@ -28,14 +28,14 @@ export default function Home() {
       name: 'Camiseta Casual Preta - Corte Moderno',
       price: 29.90,
       wholesalePrice: 23.92,
-      image: 'https://private-us-east-1.manuscdn.com/sessionFile/0r6jkvqawVn7w6BI00vhuD/sandbox/2TtbtY53PAG1z4eb3KadEU-img-3_1771858606000_na1fn_Y2FtaXNldGEtcHJldGEtbGF0ZXJhbA.png?x-oss-process=image/resize,w_1920,h_1920/format,webp/quality,q_80'
+      image: 'https://private-us-east-1.manuscdn.com/sessionFile/0r6jkvqawVn7w6BI00vhuD/sandbox/JE2HAJXqTIlL83cD7Ub7V1-img-3_1771858903000_na1fn_Y2FtaXNldGEtcHJldGEtY2FiaWRlaXJvLTI.png?x-oss-process=image/resize,w_1920,h_1920/format,webp/quality,q_80'
     },
     {
       id: '4',
       name: 'Camiseta Casual Azul - Corte Moderno',
       price: 29.90,
       wholesalePrice: 23.92,
-      image: 'https://private-us-east-1.manuscdn.com/sessionFile/0r6jkvqawVn7w6BI00vhuD/sandbox/2TtbtY53PAG1z4eb3KadEU-img-4_1771858614000_na1fn_Y2FtaXNldGEtYXp1bC1sYXRlcmFs.png?x-oss-process=image/resize,w_1920,h_1920/format,webp/quality,q_80'
+      image: 'https://private-us-east-1.manuscdn.com/sessionFile/0r6jkvqawVn7w6BI00vhuD/sandbox/JE2HAJXqTIlL83cD7Ub7V1-img-4_1771858902000_na1fn_Y2FtaXNldGEtYXp1bC1jYWJpZGVpcm8tMg.png?x-oss-process=image/resize,w_1920,h_1920/format,webp/quality,q_80'
     }
   ];
 
@@ -45,28 +45,28 @@ export default function Home() {
       name: 'Blusa De Moletom Masculino Canguru Vermelho',
       price: 76.41,
       wholesalePrice: 61.13,
-      image: 'https://private-us-east-1.manuscdn.com/sessionFile/0r6jkvqawVn7w6BI00vhuD/sandbox/w3EfzujVhf9Ir1EYyWGT7Y-img-2_1771857944000_na1fn_aGVyby1tb2xldG9t.png?x-oss-process=image/resize,w_1920,h_1920/format,webp/quality,q_80'
+      image: 'https://private-us-east-1.manuscdn.com/sessionFile/0r6jkvqawVn7w6BI00vhuD/sandbox/JE2HAJXqTIlL83cD7Ub7V1-img-1_1771858903000_na1fn_Y2FtaXNldGEtcHJldGEtY2FiaWRlaXJv.png?x-oss-process=image/resize,w_1920,h_1920/format,webp/quality,q_80'
     },
     {
       id: '6',
       name: 'Blusa De Moletom Masculino Canguru Rosa',
       price: 76.41,
       wholesalePrice: 61.13,
-      image: 'https://private-us-east-1.manuscdn.com/sessionFile/0r6jkvqawVn7w6BI00vhuD/sandbox/w3EfzujVhf9Ir1EYyWGT7Y-img-2_1771857944000_na1fn_aGVyby1tb2xldG9t.png?x-oss-process=image/resize,w_1920,h_1920/format,webp/quality,q_80'
+      image: 'https://private-us-east-1.manuscdn.com/sessionFile/0r6jkvqawVn7w6BI00vhuD/sandbox/JE2HAJXqTIlL83cD7Ub7V1-img-2_1771858900000_na1fn_Y2FtaXNldGEtYXp1bC1jYWJpZGVpcm8.png?x-oss-process=image/resize,w_1920,h_1920/format,webp/quality,q_80'
     },
     {
       id: '7',
       name: 'Blusa De Moletom Masculino Canguru Azul',
       price: 76.41,
       wholesalePrice: 61.13,
-      image: 'https://private-us-east-1.manuscdn.com/sessionFile/0r6jkvqawVn7w6BI00vhuD/sandbox/w3EfzujVhf9Ir1EYyWGT7Y-img-2_1771857944000_na1fn_aGVyby1tb2xldG9t.png?x-oss-process=image/resize,w_1920,h_1920/format,webp/quality,q_80'
+      image: 'https://private-us-east-1.manuscdn.com/sessionFile/0r6jkvqawVn7w6BI00vhuD/sandbox/JE2HAJXqTIlL83cD7Ub7V1-img-3_1771858903000_na1fn_Y2FtaXNldGEtcHJldGEtY2FiaWRlaXJvLTI.png?x-oss-process=image/resize,w_1920,h_1920/format,webp/quality,q_80'
     },
     {
       id: '8',
       name: 'Blusa De Moletom Masculino Canguru Preto',
       price: 76.41,
       wholesalePrice: 61.13,
-      image: 'https://private-us-east-1.manuscdn.com/sessionFile/0r6jkvqawVn7w6BI00vhuD/sandbox/w3EfzujVhf9Ir1EYyWGT7Y-img-2_1771857944000_na1fn_aGVyby1tb2xldG9t.png?x-oss-process=image/resize,w_1920,h_1920/format,webp/quality,q_80'
+      image: 'https://private-us-east-1.manuscdn.com/sessionFile/0r6jkvqawVn7w6BI00vhuD/sandbox/JE2HAJXqTIlL83cD7Ub7V1-img-4_1771858902000_na1fn_Y2FtaXNldGEtYXp1bC1jYWJpZGVpcm8tMg.png?x-oss-process=image/resize,w_1920,h_1920/format,webp/quality,q_80'
     }
   ];
 
@@ -76,28 +76,28 @@ export default function Home() {
       name: 'Camiseta Casual Oversized Preta',
       price: 33.21,
       wholesalePrice: 26.57,
-      image: 'https://private-us-east-1.manuscdn.com/sessionFile/0r6jkvqawVn7w6BI00vhuD/sandbox/2TtbtY53PAG1z4eb3KadEU-img-1_1771858604000_na1fn_Y2FtaXNldGEtcHJldGEtY2FzdWFs.png?x-oss-process=image/resize,w_1920,h_1920/format,webp/quality,q_80'
+      image: 'https://private-us-east-1.manuscdn.com/sessionFile/0r6jkvqawVn7w6BI00vhuD/sandbox/JE2HAJXqTIlL83cD7Ub7V1-img-1_1771858903000_na1fn_Y2FtaXNldGEtcHJldGEtY2FiaWRlaXJv.png?x-oss-process=image/resize,w_1920,h_1920/format,webp/quality,q_80'
     },
     {
       id: '10',
       name: 'Camiseta Casual Oversized Azul',
       price: 33.21,
       wholesalePrice: 26.57,
-      image: 'https://private-us-east-1.manuscdn.com/sessionFile/0r6jkvqawVn7w6BI00vhuD/sandbox/2TtbtY53PAG1z4eb3KadEU-img-2_1771858603000_na1fn_Y2FtaXNldGEtYXp1bC1jYXN1YWw.png?x-oss-process=image/resize,w_1920,h_1920/format,webp/quality,q_80'
+      image: 'https://private-us-east-1.manuscdn.com/sessionFile/0r6jkvqawVn7w6BI00vhuD/sandbox/JE2HAJXqTIlL83cD7Ub7V1-img-2_1771858900000_na1fn_Y2FtaXNldGEtYXp1bC1jYWJpZGVpcm8.png?x-oss-process=image/resize,w_1920,h_1920/format,webp/quality,q_80'
     },
     {
       id: '11',
       name: 'Camiseta Casual Oversized Preta Premium',
       price: 37.90,
       wholesalePrice: 30.32,
-      image: 'https://private-us-east-1.manuscdn.com/sessionFile/0r6jkvqawVn7w6BI00vhuD/sandbox/2TtbtY53PAG1z4eb3KadEU-img-3_1771858606000_na1fn_Y2FtaXNldGEtcHJldGEtbGF0ZXJhbA.png?x-oss-process=image/resize,w_1920,h_1920/format,webp/quality,q_80'
+      image: 'https://private-us-east-1.manuscdn.com/sessionFile/0r6jkvqawVn7w6BI00vhuD/sandbox/JE2HAJXqTIlL83cD7Ub7V1-img-3_1771858903000_na1fn_Y2FtaXNldGEtcHJldGEtY2FiaWRlaXJvLTI.png?x-oss-process=image/resize,w_1920,h_1920/format,webp/quality,q_80'
     },
     {
       id: '12',
       name: 'Camiseta Casual Oversized Azul Premium',
       price: 37.90,
       wholesalePrice: 30.32,
-      image: 'https://private-us-east-1.manuscdn.com/sessionFile/0r6jkvqawVn7w6BI00vhuD/sandbox/2TtbtY53PAG1z4eb3KadEU-img-4_1771858614000_na1fn_Y2FtaXNldGEtYXp1bC1sYXRlcmFs.png?x-oss-process=image/resize,w_1920,h_1920/format,webp/quality,q_80'
+      image: 'https://private-us-east-1.manuscdn.com/sessionFile/0r6jkvqawVn7w6BI00vhuD/sandbox/JE2HAJXqTIlL83cD7Ub7V1-img-4_1771858902000_na1fn_Y2FtaXNldGEtYXp1bC1jYWJpZGVpcm8tMg.png?x-oss-process=image/resize,w_1920,h_1920/format,webp/quality,q_80'
     }
   ];
 
