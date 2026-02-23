@@ -1,66 +1,78 @@
 import { useState } from 'react';
-import { Menu, X, ShoppingBag, Search } from 'lucide-react';
+import { Menu, X, ShoppingCart, LogIn } from 'lucide-react';
+import { Link } from 'wouter';
 
-export default function Header() {
+interface HeaderProps {
+  cartCount?: number;
+  onCartClick?: () => void;
+  onLoginClick?: () => void;
+}
+
+export default function Header({ cartCount = 0, onCartClick, onLoginClick }: HeaderProps) {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   return (
-    <header className="sticky top-0 z-50 bg-background border-b border-border">
+    <header className="sticky top-0 z-50 bg-white border-b border-gray-200">
       {/* Top banner */}
-      <div className="bg-gradient-to-r from-amber-600 to-amber-700 text-white text-center py-2 text-sm font-medium tracking-wide">
+      <div className="bg-gray-900 text-white text-center py-2 text-sm font-medium">
         Ganhe 5% OFF comprando no PIX • Frete grátis acima de R$ 150
       </div>
 
       {/* Main header */}
-      <nav className="container flex items-center justify-between py-4">
+      <nav className="container mx-auto px-4 flex items-center justify-between py-4">
         {/* Logo */}
-        <div className="flex items-center gap-3">
-          <div className="p-2.5 bg-gradient-to-br from-amber-500 to-amber-700 rounded-lg hover:shadow-lg hover:shadow-amber-500/30 transition-all duration-300 transform hover:scale-105">
-            <svg
-              viewBox="0 0 100 100"
-              className="h-10 w-10 text-white"
-              fill="currentColor"
-            >
-              <path d="M50 15 L65 35 L70 25 L75 35 L80 15 L85 40 Q85 50 75 55 Q65 60 50 60 Q35 60 25 55 Q15 50 15 40 L20 15 L30 25 L35 35 L50 15 Z M50 65 Q60 65 65 70 Q70 75 70 85 L30 85 Q30 75 35 70 Q40 65 50 65 Z" />
-            </svg>
+        <Link href="/" className="flex items-center gap-3 hover:opacity-80 transition-opacity">
+          <div className="p-2 bg-gray-900 rounded-lg">
+            <img 
+              src="https://files.manuscdn.com/user_upload_by_module/session_file/310519663334899587/zaEDQJOQByxwOKps.png" 
+              alt="UseCoelhoBR" 
+              className="h-8 w-8"
+            />
           </div>
           <div className="flex flex-col leading-tight">
-            <span className="text-xs font-semibold text-amber-500 tracking-widest uppercase">Use</span>
-            <span className="text-3xl font-bold text-foreground" style={{fontFamily: "'Playfair Display', serif"}}>Coelho</span>
+            <span className="text-xs font-semibold text-gray-600 tracking-widest">USE</span>
+            <span className="text-xl font-bold text-gray-900">CoelhoBR</span>
           </div>
-        </div>
+        </Link>
 
         {/* Desktop Navigation */}
         <div className="hidden md:flex items-center gap-8">
-          <a href="#" className="text-foreground hover:text-amber-500 transition-colors duration-300 font-medium relative group">
+          <Link href="/" className="text-gray-700 hover:text-gray-900 transition-colors font-medium">
             Mais Vendidos
-            <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-gradient-to-r from-amber-500 to-amber-700 group-hover:w-full transition-all duration-300"></span>
-          </a>
-          <a href="#" className="text-foreground hover:text-amber-500 transition-colors duration-300 font-medium relative group">
+          </Link>
+          <Link href="/masculino" className="text-gray-700 hover:text-gray-900 transition-colors font-medium">
             Masculino
-            <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-gradient-to-r from-amber-500 to-amber-700 group-hover:w-full transition-all duration-300"></span>
-          </a>
-          <a href="#" className="text-foreground hover:text-amber-500 transition-colors duration-300 font-medium relative group">
+          </Link>
+          <Link href="/colecao" className="text-gray-700 hover:text-gray-900 transition-colors font-medium">
             Coleção
-            <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-gradient-to-r from-amber-500 to-amber-700 group-hover:w-full transition-all duration-300"></span>
-          </a>
+          </Link>
         </div>
 
         {/* Right icons */}
         <div className="flex items-center gap-4">
-          <button className="p-2 hover:bg-secondary rounded-lg transition-colors duration-300 hover:text-amber-500">
-            <Search className="w-5 h-5" />
+          <button 
+            onClick={onLoginClick}
+            className="hidden md:flex items-center gap-2 px-4 py-2 text-gray-700 hover:text-gray-900 transition-colors font-medium"
+          >
+            <LogIn className="w-4 h-4" />
+            Login
           </button>
-          <button className="p-2 hover:bg-secondary rounded-lg transition-colors duration-300 relative hover:text-amber-500">
-            <ShoppingBag className="w-5 h-5" />
-            <span className="absolute top-1 right-1 w-4 h-4 bg-gradient-to-r from-amber-500 to-amber-700 text-white text-xs rounded-full flex items-center justify-center font-bold">
-              0
-            </span>
+          
+          <button 
+            onClick={onCartClick}
+            className="p-2 hover:bg-gray-100 rounded-lg transition-colors relative text-gray-700 hover:text-gray-900"
+          >
+            <ShoppingCart className="w-5 h-5" />
+            {cartCount > 0 && (
+              <span className="absolute top-0 right-0 w-5 h-5 bg-gray-900 text-white text-xs rounded-full flex items-center justify-center font-bold">
+                {cartCount}
+              </span>
+            )}
           </button>
 
           {/* Mobile menu button */}
           <button 
-            className="md:hidden p-2 hover:bg-secondary rounded-lg transition-colors duration-300"
+            className="md:hidden p-2 hover:bg-gray-100 rounded-lg transition-colors"
             onClick={() => setIsMenuOpen(!isMenuOpen)}
           >
             {isMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
@@ -70,17 +82,24 @@ export default function Header() {
 
       {/* Mobile Navigation */}
       {isMenuOpen && (
-        <div className="md:hidden border-t border-border bg-secondary">
-          <div className="container py-4 flex flex-col gap-4">
-            <a href="#" className="text-foreground hover:text-amber-500 transition-colors font-medium">
+        <div className="md:hidden border-t border-gray-200 bg-gray-50">
+          <div className="container mx-auto px-4 py-4 flex flex-col gap-4">
+            <Link href="/" className="text-gray-700 hover:text-gray-900 transition-colors font-medium py-2">
               Mais Vendidos
-            </a>
-            <a href="#" className="text-foreground hover:text-amber-500 transition-colors font-medium">
+            </Link>
+            <Link href="/masculino" className="text-gray-700 hover:text-gray-900 transition-colors font-medium py-2">
               Masculino
-            </a>
-            <a href="#" className="text-foreground hover:text-amber-500 transition-colors font-medium">
+            </Link>
+            <Link href="/colecao" className="text-gray-700 hover:text-gray-900 transition-colors font-medium py-2">
               Coleção
-            </a>
+            </Link>
+            <button 
+              onClick={onLoginClick}
+              className="flex items-center gap-2 text-gray-700 hover:text-gray-900 transition-colors font-medium py-2"
+            >
+              <LogIn className="w-4 h-4" />
+              Login
+            </button>
           </div>
         </div>
       )}

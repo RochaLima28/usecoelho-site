@@ -1,0 +1,315 @@
+import { useState } from 'react';
+import { X, Trash2 } from 'lucide-react';
+
+interface CartItem {
+  id: string;
+  name: string;
+  price: number;
+  quantity: number;
+}
+
+interface CartModalProps {
+  isOpen: boolean;
+  onClose: () => void;
+  items: CartItem[];
+  onRemoveItem?: (id: string) => void;
+  onUpdateQuantity?: (id: string, quantity: number) => void;
+}
+
+export default function CartModal({
+  isOpen,
+  onClose,
+  items,
+  onRemoveItem,
+  onUpdateQuantity,
+}: CartModalProps) {
+  const [isCheckout, setIsCheckout] = useState(false);
+  const [customerData, setCustomerData] = useState({
+    name: '',
+    email: '',
+    phone: '',
+    address: '',
+    city: '',
+    state: '',
+    zipcode: '',
+  });
+
+  // Calcular desconto progressivo (3% a partir de 7 unidades)
+  const totalQuantity = items.reduce((sum, item) => sum + item.quantity, 0);
+  const hasDiscount = totalQuantity >= 7;
+  const discountPercent = hasDiscount ? 3 : 0;
+
+  // Calcular subtotal
+  const subtotal = items.reduce((sum, item) => sum + item.price * item.quantity, 0);
+  const discount = (subtotal * discountPercent) / 100;
+  const total = subtotal - discount;
+
+  const handleCheckout = (e: React.FormEvent) => {
+    e.preventDefault();
+    alert(
+      `Pedido realizado!\n\nTotal: R$ ${total.toFixed(2)}\n\nEste é um site de demonstração. Em um site real, o pagamento seria processado aqui.`
+    );
+    setIsCheckout(false);
+    onClose();
+  };
+
+  if (!isOpen) return null;
+
+  return (
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 overflow-y-auto">
+      <div className="bg-white rounded-lg w-full max-w-2xl p-8 relative my-8">
+        <button
+          onClick={onClose}
+          className="absolute top-4 right-4 text-gray-500 hover:text-gray-700"
+        >
+          <X className="w-6 h-6" />
+        </button>
+
+        {!isCheckout ? (
+          <>
+            <h2 className="text-3xl font-bold text-gray-900 mb-6">Carrinho de Compras</h2>
+
+            {items.length === 0 ? (
+              <div className="text-center py-12">
+                <p className="text-gray-600 text-lg mb-4">Seu carrinho está vazio</p>
+                <button
+                  onClick={onClose}
+                  className="px-6 py-3 bg-gray-900 text-white font-semibold rounded-lg hover:bg-gray-800 transition-colors"
+                >
+                  Continuar Comprando
+                </button>
+              </div>
+            ) : (
+              <>
+                {/* Items List */}
+                <div className="space-y-4 mb-6 max-h-96 overflow-y-auto">
+                  {items.map((item) => (
+                    <div key={item.id} className="flex items-center gap-4 pb-4 border-b border-gray-200">
+                      <div className="flex-1">
+                        <h3 className="font-semibold text-gray-900">{item.name}</h3>
+                        <p className="text-gray-600">R$ {item.price.toFixed(2)}</p>
+                      </div>
+
+                      <div className="flex items-center border border-gray-300 rounded-lg">
+                        <button
+                          onClick={() =>
+                            onUpdateQuantity?.(item.id, Math.max(1, item.quantity - 1))
+                          }
+                          className="px-3 py-2 text-gray-600 hover:text-gray-900"
+                        >
+                          −
+                        </button>
+                        <span className="px-4 py-2 text-gray-900 font-medium">
+                          {item.quantity}
+                        </span>
+                        <button
+                          onClick={() => onUpdateQuantity?.(item.id, item.quantity + 1)}
+                          className="px-3 py-2 text-gray-600 hover:text-gray-900"
+                        >
+                          +
+                        </button>
+                      </div>
+
+                      <p className="font-semibold text-gray-900 w-24 text-right">
+                        R$ {(item.price * item.quantity).toFixed(2)}
+                      </p>
+
+                      <button
+                        onClick={() => onRemoveItem?.(item.id)}
+                        className="p-2 text-red-600 hover:text-red-700 hover:bg-red-50 rounded-lg transition-colors"
+                      >
+                        <Trash2 className="w-5 h-5" />
+                      </button>
+                    </div>
+                  ))}
+                </div>
+
+                {/* Discount Info */}
+                {hasDiscount && (
+                  <div className="p-4 bg-green-50 border border-green-200 rounded-lg mb-6">
+                    <p className="text-green-700 font-semibold">
+                      ✓ Desconto de 3% aplicado! ({totalQuantity} unidades)
+                    </p>
+                  </div>
+                )}
+
+                {/* Summary */}
+                <div className="bg-gray-50 rounded-lg p-4 mb-6 space-y-2">
+                  <div className="flex justify-between text-gray-700">
+                    <span>Subtotal:</span>
+                    <span>R$ {subtotal.toFixed(2)}</span>
+                  </div>
+                  {hasDiscount && (
+                    <div className="flex justify-between text-green-700 font-semibold">
+                      <span>Desconto (3%):</span>
+                      <span>-R$ {discount.toFixed(2)}</span>
+                    </div>
+                  )}
+                  <div className="border-t border-gray-300 pt-2 flex justify-between text-lg font-bold text-gray-900">
+                    <span>Total:</span>
+                    <span>R$ {total.toFixed(2)}</span>
+                  </div>
+                </div>
+
+                {/* Buttons */}
+                <div className="flex gap-4">
+                  <button
+                    onClick={onClose}
+                    className="flex-1 px-6 py-3 border-2 border-gray-900 text-gray-900 font-semibold rounded-lg hover:bg-gray-50 transition-colors"
+                  >
+                    Continuar Comprando
+                  </button>
+                  <button
+                    onClick={() => setIsCheckout(true)}
+                    className="flex-1 px-6 py-3 bg-gray-900 text-white font-semibold rounded-lg hover:bg-gray-800 transition-colors"
+                  >
+                    Ir para Checkout
+                  </button>
+                </div>
+              </>
+            )}
+          </>
+        ) : (
+          <>
+            <h2 className="text-3xl font-bold text-gray-900 mb-6">Checkout</h2>
+
+            <form onSubmit={handleCheckout} className="space-y-4">
+              {/* Name */}
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  Nome Completo
+                </label>
+                <input
+                  type="text"
+                  required
+                  value={customerData.name}
+                  onChange={(e) =>
+                    setCustomerData({ ...customerData, name: e.target.value })
+                  }
+                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:border-gray-900"
+                />
+              </div>
+
+              {/* Email */}
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  Email
+                </label>
+                <input
+                  type="email"
+                  required
+                  value={customerData.email}
+                  onChange={(e) =>
+                    setCustomerData({ ...customerData, email: e.target.value })
+                  }
+                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:border-gray-900"
+                />
+              </div>
+
+              {/* Phone */}
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  Telefone
+                </label>
+                <input
+                  type="tel"
+                  required
+                  value={customerData.phone}
+                  onChange={(e) =>
+                    setCustomerData({ ...customerData, phone: e.target.value })
+                  }
+                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:border-gray-900"
+                />
+              </div>
+
+              {/* Address */}
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  Endereço
+                </label>
+                <input
+                  type="text"
+                  required
+                  value={customerData.address}
+                  onChange={(e) =>
+                    setCustomerData({ ...customerData, address: e.target.value })
+                  }
+                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:border-gray-900"
+                />
+              </div>
+
+              {/* City, State, Zipcode */}
+              <div className="grid grid-cols-3 gap-4">
+                <input
+                  type="text"
+                  placeholder="Cidade"
+                  required
+                  value={customerData.city}
+                  onChange={(e) =>
+                    setCustomerData({ ...customerData, city: e.target.value })
+                  }
+                  className="px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:border-gray-900"
+                />
+                <input
+                  type="text"
+                  placeholder="Estado"
+                  required
+                  value={customerData.state}
+                  onChange={(e) =>
+                    setCustomerData({ ...customerData, state: e.target.value })
+                  }
+                  className="px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:border-gray-900"
+                />
+                <input
+                  type="text"
+                  placeholder="CEP"
+                  required
+                  value={customerData.zipcode}
+                  onChange={(e) =>
+                    setCustomerData({ ...customerData, zipcode: e.target.value })
+                  }
+                  className="px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:border-gray-900"
+                />
+              </div>
+
+              {/* Order Summary */}
+              <div className="bg-gray-50 rounded-lg p-4 my-6">
+                <div className="flex justify-between text-gray-700 mb-2">
+                  <span>Subtotal:</span>
+                  <span>R$ {subtotal.toFixed(2)}</span>
+                </div>
+                {hasDiscount && (
+                  <div className="flex justify-between text-green-700 font-semibold mb-2">
+                    <span>Desconto (3%):</span>
+                    <span>-R$ {discount.toFixed(2)}</span>
+                  </div>
+                )}
+                <div className="border-t border-gray-300 pt-2 flex justify-between text-lg font-bold text-gray-900">
+                  <span>Total:</span>
+                  <span>R$ {total.toFixed(2)}</span>
+                </div>
+              </div>
+
+              {/* Buttons */}
+              <div className="flex gap-4">
+                <button
+                  type="button"
+                  onClick={() => setIsCheckout(false)}
+                  className="flex-1 px-6 py-3 border-2 border-gray-900 text-gray-900 font-semibold rounded-lg hover:bg-gray-50 transition-colors"
+                >
+                  Voltar
+                </button>
+                <button
+                  type="submit"
+                  className="flex-1 px-6 py-3 bg-gray-900 text-white font-semibold rounded-lg hover:bg-gray-800 transition-colors"
+                >
+                  Finalizar Pedido
+                </button>
+              </div>
+            </form>
+          </>
+        )}
+      </div>
+    </div>
+  );
+}
