@@ -1,6 +1,7 @@
 import { useState } from 'react';
-import { Menu, X, ShoppingCart, LogIn } from 'lucide-react';
+import { Menu, X, ShoppingCart, LogIn, Settings } from 'lucide-react';
 import { Link } from 'wouter';
+import { useAuth } from '@/_core/hooks/useAuth';
 
 interface HeaderProps {
   cartCount?: number;
@@ -10,6 +11,7 @@ interface HeaderProps {
 
 export default function Header({ cartCount = 0, onCartClick, onLoginClick }: HeaderProps) {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const { user } = useAuth();
 
   return (
     <header className="sticky top-0 z-50 bg-white border-b border-gray-200">
@@ -50,6 +52,13 @@ export default function Header({ cartCount = 0, onCartClick, onLoginClick }: Hea
 
         {/* Right icons */}
         <div className="flex items-center gap-4">
+          {user?.role === 'admin' && (
+            <Link href="/admin" className="hidden md:flex items-center gap-2 px-4 py-2 text-gray-700 hover:text-gray-900 transition-colors font-medium">
+              <Settings className="w-4 h-4" />
+              Admin
+            </Link>
+          )}
+          
           <button 
             onClick={onLoginClick}
             className="hidden md:flex items-center gap-2 px-4 py-2 text-gray-700 hover:text-gray-900 transition-colors font-medium"
@@ -93,6 +102,12 @@ export default function Header({ cartCount = 0, onCartClick, onLoginClick }: Hea
             <Link href="/colecao" className="text-gray-700 hover:text-gray-900 transition-colors font-medium py-2">
               Coleção
             </Link>
+            {user?.role === 'admin' && (
+              <Link href="/admin" className="flex items-center gap-2 text-gray-700 hover:text-gray-900 transition-colors font-medium py-2">
+                <Settings className="w-4 h-4" />
+                Admin
+              </Link>
+            )}
             <button 
               onClick={onLoginClick}
               className="flex items-center gap-2 text-gray-700 hover:text-gray-900 transition-colors font-medium py-2"

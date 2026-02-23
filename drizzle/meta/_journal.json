@@ -8,6 +8,13 @@
       "when": 1771860839673,
       "tag": "0000_sticky_supreme_intelligence",
       "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "5",
+      "when": 1771863951347,
+      "tag": "0001_equal_giant_girl",
+      "breakpoints": true
     }
   ]
 }
