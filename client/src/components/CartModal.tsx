@@ -1,5 +1,6 @@
 import { useState } from 'react';
-import { X, Trash2 } from 'lucide-react';
+import { X, Trash2, Loader2 } from 'lucide-react';
+import { trpc } from '@/lib/trpc';
 
 interface CartItem {
   id: string;
@@ -24,6 +25,10 @@ export default function CartModal({
   onUpdateQuantity,
 }: CartModalProps) {
   const [isCheckout, setIsCheckout] = useState(false);
+  const [selectedShippingOption, setSelectedShippingOption] = useState<string | null>(null);
+  const [shippingCost, setShippingCost] = useState(0);
+  const [loadingShipping, setLoadingShipping] = useState(false);
+  
   const [customerData, setCustomerData] = useState({
     name: '',
     email: '',
@@ -34,6 +39,9 @@ export default function CartModal({
     zipcode: '',
   });
 
+  const shippingMutation = trpc.shipping.calculateShipping.useMutation();
+  const paymentMutation = trpc.payment.createPaymentPreference.useMutation();
+
   // Calcular desconto progressivo (3% a partir de 7 unidades)
   const totalQuantity = items.reduce((sum, item) => sum + item.quantity, 0);
   const hasDiscount = totalQuantity >= 7;
@@ -42,15 +50,70 @@ export default function CartModal({
   // Calcular subtotal
   const subtotal = items.reduce((sum, item) => sum + item.price * item.quantity, 0);
   const discount = (subtotal * discountPercent) / 100;
-  const total = subtotal - discount;
+  const total = subtotal - discount + shippingCost;
 
-  const handleCheckout = (e: React.FormEvent) => {
+  const handleCalculateShipping = async () => {
+    if (!customerData.zipcode) {
+      alert('Por favor, preencha o CEP');
+      return;
+    }
+
+    setLoadingShipping(true);
+    try {
+      const result = await shippingMutation.mutateAsync({
+        cep: customerData.zipcode,
+        weight: 200, // Peso de uma camiseta em gramas
+        height: 30,
+        width: 20,
+        length: 10,
+        quantity: totalQuantity,
+      });
+
+      if (result.success && result.options && result.options.length > 0) {
+        setSelectedShippingOption(result.options[0]?.serviceCode || null);
+        setShippingCost(result.options[0]?.value || 0);
+      }
+    } catch (error) {
+      alert('Erro ao calcular frete');
+    } finally {
+      setLoadingShipping(false);
+    }
+  };
+
+  const handleCheckout = async (e: React.FormEvent) => {
     e.preventDefault();
-    alert(
-      `Pedido realizado!\n\nTotal: R$ ${total.toFixed(2)}\n\nEste é um site de demonstração. Em um site real, o pagamento seria processado aqui.`
-    );
-    setIsCheckout(false);
-    onClose();
+
+    if (!selectedShippingOption) {
+      alert('Por favor, selecione uma opção de frete');
+      return;
+    }
+
+    try {
+      const result = await paymentMutation.mutateAsync({
+        amount: total,
+        description: `Pedido UseCoelhoBR - ${items.length} item(ns)`,
+        payerEmail: customerData.email,
+        payerName: customerData.name,
+        payerPhone: customerData.phone,
+        orderId: `ORD-${Date.now()}`,
+        items: items.map(item => ({
+          title: item.name,
+          quantity: item.quantity,
+          unitPrice: item.price,
+        })),
+      });
+
+      if (result.success && 'paymentUrl' in result && result.paymentUrl) {
+        // Redirecionar para Mercado Pago
+        window.location.href = result.paymentUrl;
+      } else if ('error' in result) {
+        alert(result.error || 'Erro ao processar pagamento');
+      } else {
+        alert('Erro ao processar pagamento');
+      }
+    } catch (error) {
+      alert('Erro ao processar pagamento');
+    }
   };
 
   if (!isOpen) return null;
@@ -145,6 +208,10 @@ export default function CartModal({
                       <span>-R$ {discount.toFixed(2)}</span>
                     </div>
                   )}
+                  <div className="flex justify-between text-gray-700">
+                    <span>Frete:</span>
+                    <span>R$ {shippingCost.toFixed(2)}</span>
+                  </div>
                   <div className="border-t border-gray-300 pt-2 flex justify-between text-lg font-bold text-gray-900">
                     <span>Total:</span>
                     <span>R$ {total.toFixed(2)}</span>
@@ -272,6 +339,23 @@ export default function CartModal({
                 />
               </div>
 
+              {/* Calculate Shipping */}
+              <button
+                type="button"
+                onClick={handleCalculateShipping}
+                disabled={loadingShipping}
+                className="w-full px-4 py-3 border-2 border-gray-900 text-gray-900 font-semibold rounded-lg hover:bg-gray-50 transition-colors disabled:opacity-50"
+              >
+                {loadingShipping ? (
+                  <>
+                    <Loader2 className="inline mr-2 animate-spin" />
+                    Calculando Frete...
+                  </>
+                ) : (
+                  'Calcular Frete'
+                )}
+              </button>
+
               {/* Order Summary */}
               <div className="bg-gray-50 rounded-lg p-4 my-6">
                 <div className="flex justify-between text-gray-700 mb-2">
@@ -284,6 +368,10 @@ export default function CartModal({
                     <span>-R$ {discount.toFixed(2)}</span>
                   </div>
                 )}
+                <div className="flex justify-between text-gray-700 mb-2">
+                  <span>Frete:</span>
+                  <span>R$ {shippingCost.toFixed(2)}</span>
+                </div>
                 <div className="border-t border-gray-300 pt-2 flex justify-between text-lg font-bold text-gray-900">
                   <span>Total:</span>
                   <span>R$ {total.toFixed(2)}</span>
@@ -301,9 +389,17 @@ export default function CartModal({
                 </button>
                 <button
                   type="submit"
-                  className="flex-1 px-6 py-3 bg-gray-900 text-white font-semibold rounded-lg hover:bg-gray-800 transition-colors"
+                  disabled={paymentMutation.isPending}
+                  className="flex-1 px-6 py-3 bg-gray-900 text-white font-semibold rounded-lg hover:bg-gray-800 transition-colors disabled:opacity-50"
                 >
-                  Finalizar Pedido
+                  {paymentMutation.isPending ? (
+                    <>
+                      <Loader2 className="inline mr-2 animate-spin" />
+                      Processando...
+                    </>
+                  ) : (
+                    'Finalizar Pedido'
+                  )}
                 </button>
               </div>
             </form>
