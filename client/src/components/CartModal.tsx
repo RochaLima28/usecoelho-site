@@ -28,6 +28,7 @@ export default function CartModal({
   const [selectedShippingOption, setSelectedShippingOption] = useState<string | null>(null);
   const [shippingCost, setShippingCost] = useState(0);
   const [loadingShipping, setLoadingShipping] = useState(false);
+  const [shippingOptions, setShippingOptions] = useState<any[]>([]);
   
   const [customerData, setCustomerData] = useState({
     name: '',
@@ -60,21 +61,28 @@ export default function CartModal({
 
     setLoadingShipping(true);
     try {
+      console.log('Iniciando calculo de frete com CEP:', customerData.zipcode);
       const result = await shippingMutation.mutateAsync({
         cep: customerData.zipcode,
-        weight: 200, // Peso de uma camiseta em gramas
+        weight: 200,
         height: 30,
         width: 20,
         length: 10,
         quantity: totalQuantity,
       });
 
+      console.log('Resultado do frete:', result);
       if (result.success && result.options && result.options.length > 0) {
+        setShippingOptions(result.options);
         setSelectedShippingOption(result.options[0]?.serviceCode || null);
         setShippingCost(result.options[0]?.value || 0);
+        alert('Frete calculado com sucesso!');
+      } else {
+        alert('Erro ao calcular frete: ' + (result.error || 'Desconhecido'));
       }
     } catch (error) {
-      alert('Erro ao calcular frete');
+      console.error('Erro ao calcular frete:', error);
+      alert('Erro ao calcular frete: ' + (error instanceof Error ? error.message : 'Desconhecido'));
     } finally {
       setLoadingShipping(false);
     }
@@ -84,11 +92,12 @@ export default function CartModal({
     e.preventDefault();
 
     if (!selectedShippingOption) {
-      alert('Por favor, selecione uma opção de frete');
+      alert('Por favor, selecione uma opcao de frete');
       return;
     }
 
     try {
+      console.log('Iniciando pagamento com dados:', { amount: total, email: customerData.email });
       const result = await paymentMutation.mutateAsync({
         amount: total,
         description: `Pedido UseCoelhoBR - ${items.length} item(ns)`,
@@ -103,8 +112,8 @@ export default function CartModal({
         })),
       });
 
+      console.log('Resultado do pagamento:', result);
       if (result.success && 'paymentUrl' in result && result.paymentUrl) {
-        // Redirecionar para Mercado Pago
         window.location.href = result.paymentUrl;
       } else if ('error' in result) {
         alert(result.error || 'Erro ao processar pagamento');
@@ -112,7 +121,8 @@ export default function CartModal({
         alert('Erro ao processar pagamento');
       }
     } catch (error) {
-      alert('Erro ao processar pagamento');
+      console.error('Erro ao processar pagamento:', error);
+      alert('Erro ao processar pagamento: ' + (error instanceof Error ? error.message : 'Desconhecido'));
     }
   };
 
@@ -134,7 +144,7 @@ export default function CartModal({
 
             {items.length === 0 ? (
               <div className="text-center py-12">
-                <p className="text-gray-600 text-lg mb-4">Seu carrinho está vazio</p>
+                <p className="text-gray-600 text-lg mb-4">Seu carrinho esta vazio</p>
                 <button
                   onClick={onClose}
                   className="px-6 py-3 bg-gray-900 text-white font-semibold rounded-lg hover:bg-gray-800 transition-colors"
@@ -191,7 +201,7 @@ export default function CartModal({
                 {hasDiscount && (
                   <div className="p-4 bg-green-50 border border-green-200 rounded-lg mb-6">
                     <p className="text-green-700 font-semibold">
-                      ✓ Desconto de 3% aplicado! ({totalQuantity} unidades)
+                      Desconto de 3% aplicado! ({totalQuantity} unidades)
                     </p>
                   </div>
                 )}
@@ -292,7 +302,7 @@ export default function CartModal({
               {/* Address */}
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2">
-                  Endereço
+                  Endereco
                 </label>
                 <input
                   type="text"
@@ -355,6 +365,35 @@ export default function CartModal({
                   'Calcular Frete'
                 )}
               </button>
+
+              {/* Shipping Options */}
+              {shippingOptions.length > 0 && (
+                <div className="border border-gray-300 rounded-lg p-4">
+                  <h3 className="font-semibold text-gray-900 mb-3">Opcoes de Frete:</h3>
+                  <div className="space-y-2">
+                    {shippingOptions.map((option) => (
+                      <label key={option.serviceCode} className="flex items-center gap-3 p-3 border border-gray-200 rounded-lg cursor-pointer hover:bg-gray-50">
+                        <input
+                          type="radio"
+                          name="shipping"
+                          value={option.serviceCode}
+                          checked={selectedShippingOption === option.serviceCode}
+                          onChange={() => {
+                            setSelectedShippingOption(option.serviceCode);
+                            setShippingCost(option.value);
+                          }}
+                          className="w-4 h-4"
+                        />
+                        <div className="flex-1">
+                          <p className="font-medium text-gray-900">{option.serviceName}</p>
+                          <p className="text-sm text-gray-600">{option.deliveryTime} dias uteis</p>
+                        </div>
+                        <p className="font-semibold text-gray-900">R$ {option.value.toFixed(2)}</p>
+                      </label>
+                    ))}
+                  </div>
+                </div>
+              )}
 
               {/* Order Summary */}
               <div className="bg-gray-50 rounded-lg p-4 my-6">

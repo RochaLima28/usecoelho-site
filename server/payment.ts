@@ -79,11 +79,11 @@ export async function createPaymentPreference(request: PaymentRequest): Promise<
     // Simulação para demonstração
     const paymentId = `MP-${Date.now()}`;
     const paymentUrl = `https://www.mercadopago.com.br/checkout/v1/redirect?preference-id=${paymentId}`;
-    const qrCode = `00020126580014br.gov.bcb.pix0136${generatePixKey()}`; // QR Code simulado
+    const qrCode = `00020126580014br.gov.bcb.pix0136${generatePixKey()}`;
 
     return {
       id: paymentId,
-      status: 'pending',
+      status: 'pending' as const,
       message: 'Preferência de pagamento criada com sucesso',
       paymentUrl,
       qrCode,

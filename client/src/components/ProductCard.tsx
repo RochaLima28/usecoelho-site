@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { ShoppingCart } from 'lucide-react';
+import { Link } from 'wouter';
 
 interface ProductCardProps {
   id: string;
@@ -36,30 +37,34 @@ export default function ProductCard({
       onMouseLeave={() => setIsHovered(false)}
     >
       {/* Image Container */}
-      <div className="relative overflow-hidden bg-gray-100 h-80 md:h-96">
-        <img
-          src={image}
-          alt={name}
-          className={`w-full h-full object-cover transition-transform duration-500 ${
-            isHovered ? 'scale-105' : 'scale-100'
-          }`}
-        />
+      <Link href={`/produto/${id}`}>
+        <div className="relative overflow-hidden bg-gray-100 h-80 md:h-96 cursor-pointer">
+          <img
+            src={image}
+            alt={name}
+            className={`w-full h-full object-cover transition-transform duration-500 ${
+              isHovered ? 'scale-105' : 'scale-100'
+            }`}
+          />
 
-        {/* Badge */}
-        {badge && (
-          <div className="absolute top-4 left-4 z-10">
-            <span className="inline-block px-3 py-1 bg-gray-900 text-white text-xs font-bold tracking-wider uppercase rounded-full">
-              {badge}
-            </span>
-          </div>
-        )}
-      </div>
+          {/* Badge */}
+          {badge && (
+            <div className="absolute top-4 left-4 z-10">
+              <span className="inline-block px-3 py-1 bg-gray-900 text-white text-xs font-bold tracking-wider uppercase rounded-full">
+                {badge}
+              </span>
+            </div>
+          )}
+        </div>
+      </Link>
 
       {/* Content */}
       <div className="p-4 md:p-6">
-        <h3 className="text-lg font-semibold text-gray-900 mb-3 line-clamp-2">
-          {name}
-        </h3>
+        <Link href={`/produto/${id}`}>
+          <h3 className="text-lg font-semibold text-gray-900 mb-3 line-clamp-2 hover:text-gray-700 cursor-pointer">
+            {name}
+          </h3>
+        </Link>
 
         {/* Price */}
         <div className="mb-4">
