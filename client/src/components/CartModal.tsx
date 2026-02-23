@@ -35,6 +35,8 @@ export default function CartModal({
     email: '',
     phone: '',
     address: '',
+    number: '',
+    complement: '',
     city: '',
     state: '',
     zipcode: '',
@@ -42,6 +44,8 @@ export default function CartModal({
 
   const shippingMutation = trpc.shipping.calculateShipping.useMutation();
   const paymentMutation = trpc.payment.createPaymentPreference.useMutation();
+  const saveAddressMutation = trpc.address.saveAddress.useMutation();
+  const getDefaultAddressMutation = trpc.address.getDefaultAddress.useQuery();
 
   // Calcular desconto progressivo (3% a partir de 7 unidades)
   const totalQuantity = items.reduce((sum, item) => sum + item.quantity, 0);
@@ -56,6 +60,10 @@ export default function CartModal({
   const handleCalculateShipping = async () => {
     if (!customerData.zipcode) {
       alert('Por favor, preencha o CEP');
+      return;
+    }
+    if (!customerData.address || !customerData.number) {
+      alert('Por favor, preencha o endereco e numero');
       return;
     }
 
@@ -76,6 +84,23 @@ export default function CartModal({
         setShippingOptions(result.options);
         setSelectedShippingOption(result.options[0]?.serviceCode || null);
         setShippingCost(result.options[0]?.value || 0);
+        
+        // Salvar endereco
+        try {
+          await saveAddressMutation.mutateAsync({
+            street: customerData.address,
+            number: customerData.number,
+            complement: customerData.complement || undefined,
+            neighborhood: 'Nao informado',
+            city: customerData.city,
+            state: customerData.state,
+            zipCode: customerData.zipcode,
+            isDefault: true,
+          });
+        } catch (addressError) {
+          console.error('Erro ao salvar endereco:', addressError);
+        }
+        
         alert('Frete calculado com sucesso!');
       } else {
         alert('Erro ao calcular frete: ' + (result.error || 'Desconhecido'));
@@ -93,6 +118,11 @@ export default function CartModal({
 
     if (!selectedShippingOption) {
       alert('Por favor, selecione uma opcao de frete');
+      return;
+    }
+    
+    if (!customerData.address || !customerData.number) {
+      alert('Por favor, preencha o endereco e numero');
       return;
     }
 
@@ -313,6 +343,39 @@ export default function CartModal({
                   }
                   className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:border-gray-900"
                 />
+              </div>
+
+              {/* Number and Complement */}
+              <div className="grid grid-cols-2 gap-4">
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                    Numero *
+                  </label>
+                  <input
+                    type="text"
+                    required
+                    placeholder="Ex: 123"
+                    value={customerData.number}
+                    onChange={(e) =>
+                      setCustomerData({ ...customerData, number: e.target.value })
+                    }
+                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:border-gray-900"
+                  />
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                    Complemento (opcional)
+                  </label>
+                  <input
+                    type="text"
+                    placeholder="Ex: Apto 42"
+                    value={customerData.complement}
+                    onChange={(e) =>
+                      setCustomerData({ ...customerData, complement: e.target.value })
+                    }
+                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:border-gray-900"
+                  />
+                </div>
               </div>
 
               {/* City, State, Zipcode */}

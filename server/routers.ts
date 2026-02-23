@@ -1,10 +1,12 @@
 import { COOKIE_NAME } from "@shared/const";
+import { TRPCError } from "@trpc/server";
 import { getSessionCookieOptions } from "./_core/cookies";
 import { systemRouter } from "./_core/systemRouter";
 import { publicProcedure, router, protectedProcedure } from "./_core/trpc";
 import { z } from "zod";
 import { calculateShipping, validateCEP, formatCEP } from "./shipping";
 import { createPaymentPreference, validateEmail, validatePhone } from "./payment";
+import { saveAddress, getAddresses, getDefaultAddress, updateAddress, deleteAddress } from "./address.db";
 import {
   getAllOrders,
   getOrderById,
@@ -209,6 +211,96 @@ export const appRouter = router({
       }
       return await getAllProducts();
     }),
+  }),
+
+  address: router({
+    saveAddress: protectedProcedure
+      .input(
+        z.object({
+          street: z.string(),
+          number: z.string(),
+          complement: z.string().optional(),
+          neighborhood: z.string(),
+          city: z.string(),
+          state: z.string(),
+          zipCode: z.string(),
+          isDefault: z.boolean().optional(),
+        })
+      )
+      .mutation(async ({ input, ctx }) => {
+        if (!ctx.user) {
+          throw new TRPCError({ code: 'UNAUTHORIZED' });
+        }
+        try {
+          await saveAddress(ctx.user.id, input);
+          return { success: true };
+        } catch (error) {
+          throw new TRPCError({ code: 'INTERNAL_SERVER_ERROR', message: 'Erro ao salvar endereco' });
+        }
+      }),
+
+    getAddresses: protectedProcedure.query(async ({ ctx }) => {
+      if (!ctx.user) {
+        throw new TRPCError({ code: 'UNAUTHORIZED' });
+      }
+      try {
+        return await getAddresses(ctx.user.id);
+      } catch (error) {
+        throw new TRPCError({ code: 'INTERNAL_SERVER_ERROR', message: 'Erro ao buscar enderecos' });
+      }
+    }),
+
+    getDefaultAddress: protectedProcedure.query(async ({ ctx }) => {
+      if (!ctx.user) {
+        throw new TRPCError({ code: 'UNAUTHORIZED' });
+      }
+      try {
+        return await getDefaultAddress(ctx.user.id);
+      } catch (error) {
+        throw new TRPCError({ code: 'INTERNAL_SERVER_ERROR', message: 'Erro ao buscar endereco padrao' });
+      }
+    }),
+
+    updateAddress: protectedProcedure
+      .input(
+        z.object({
+          id: z.number(),
+          street: z.string().optional(),
+          number: z.string().optional(),
+          complement: z.string().optional(),
+          neighborhood: z.string().optional(),
+          city: z.string().optional(),
+          state: z.string().optional(),
+          zipCode: z.string().optional(),
+          isDefault: z.boolean().optional(),
+        })
+      )
+      .mutation(async ({ input, ctx }) => {
+        if (!ctx.user) {
+          throw new TRPCError({ code: 'UNAUTHORIZED' });
+        }
+        const { id, ...addressData } = input;
+        try {
+          await updateAddress(id, ctx.user.id, addressData);
+          return { success: true };
+        } catch (error) {
+          throw new TRPCError({ code: 'INTERNAL_SERVER_ERROR', message: 'Erro ao atualizar endereco' });
+        }
+      }),
+
+    deleteAddress: protectedProcedure
+      .input(z.object({ id: z.number() }))
+      .mutation(async ({ input, ctx }) => {
+        if (!ctx.user) {
+          throw new TRPCError({ code: 'UNAUTHORIZED' });
+        }
+        try {
+          await deleteAddress(input.id, ctx.user.id);
+          return { success: true };
+        } catch (error) {
+          throw new TRPCError({ code: 'INTERNAL_SERVER_ERROR', message: 'Erro ao deletar endereco' });
+        }
+      }),
   }),
 });
 
