@@ -1,6 +1,7 @@
 import { eq, desc, and, gte, lte } from "drizzle-orm";
 import { getDb } from "./db";
 import { orders, orderItems, payments, inventory, products } from "../drizzle/schema";
+import type { InsertOrder, InsertOrderItem } from "../drizzle/schema";
 
 // ===== PEDIDOS =====
 
@@ -253,4 +254,31 @@ export async function updateProduct(id: number, data: any) {
     .limit(1);
   
   return result[0] || null;
+}
+
+// ===== CRIAÇÃO DE PEDIDO (CHECKOUT) =====
+
+export interface CreateOrderInput {
+  orderData: Omit<InsertOrder, 'id' | 'createdAt' | 'updatedAt'>;
+  items: Array<Omit<InsertOrderItem, 'id' | 'orderId' | 'createdAt'>>;
+}
+
+/**
+ * Persiste um novo pedido e seus itens no banco de dados.
+ * Retorna o pedido criado com seus itens.
+ */
+export async function createOrder(input: CreateOrderInput) {
+  const db = await getDb();
+  if (!db) return null;
+
+  const [result] = await db.insert(orders).values(input.orderData);
+  const orderId = (result as any).insertId as number;
+
+  if (input.items.length > 0) {
+    await db.insert(orderItems).values(
+      input.items.map((item) => ({ ...item, orderId }))
+    );
+  }
+
+  return await getOrderById(orderId);
 }

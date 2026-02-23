@@ -10,4 +10,9 @@ export const ENV = {
   mercadoPagoAccessToken: process.env.MERCADO_PAGO_ACCESS_TOKEN ?? "",
   mercadoPagoPublicKey: process.env.VITE_MERCADO_PAGO_PUBLIC_KEY ?? "",
   mercadoPagoEmail: process.env.MERCADO_PAGO_EMAIL ?? "",
+  // Twilio / WhatsApp
+  twilioAccountSid: process.env.TWILIO_ACCOUNT_SID ?? "",
+  twilioAuthToken: process.env.TWILIO_AUTH_TOKEN ?? "",
+  twilioWhatsappFrom: process.env.TWILIO_WHATSAPP_FROM ?? "",
+  adminWhatsappTo: process.env.ADMIN_WHATSAPP_TO ?? "",
 };

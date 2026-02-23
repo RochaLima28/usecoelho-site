@@ -22,7 +22,9 @@ import {
   getLowStockItems,
   getDashboardStats,
   getAllProducts,
+  createOrder,
 } from "./admin.db";
+import { sendAdminNewOrderWhatsApp } from "./services/whatsapp";
 
 export const appRouter = router({
   system: systemRouter,
@@ -93,6 +95,77 @@ export const appRouter = router({
           return { success: paymentResponse.status !== 'error', ...paymentResponse };
         } catch (error) {
           return { success: false, status: 'error' as const, message: "Erro ao criar pagamento" };
+        }
+      }),
+  }),
+
+  checkout: router({
+    createOrder: publicProcedure
+      .input(
+        z.object({
+          customerName: z.string(),
+          customerEmail: z.string(),
+          customerPhone: z.string().optional(),
+          address: z.string(),
+          city: z.string(),
+          state: z.string(),
+          zipCode: z.string(),
+          subtotal: z.number(),
+          shippingCost: z.number().default(0),
+          discount: z.number().default(0),
+          total: z.number(),
+          shippingMethod: z.string().optional(),
+          items: z.array(
+            z.object({
+              productId: z.number(),
+              size: z.string(),
+              quantity: z.number(),
+              price: z.number(),
+              name: z.string(),
+            })
+          ),
+        })
+      )
+      .mutation(async ({ input, ctx }) => {
+        try {
+          const { items, ...orderData } = input;
+          const order = await createOrder({
+            orderData: {
+              ...orderData,
+              subtotal: String(orderData.subtotal),
+              shippingCost: String(orderData.shippingCost),
+              discount: String(orderData.discount),
+              total: String(orderData.total),
+              userId: ctx.user?.id ?? null,
+            },
+            items: items.map(({ name: _name, ...item }) => ({
+              ...item,
+              price: String(item.price),
+            })),
+          });
+
+          if (!order) {
+            throw new TRPCError({ code: 'INTERNAL_SERVER_ERROR', message: 'Erro ao criar pedido' });
+          }
+
+          // Notificar admin via WhatsApp (falhas não bloqueiam o checkout)
+          const itemNameByProductId = new Map(items.map((i) => [i.productId, i.name]));
+          await sendAdminNewOrderWhatsApp({
+            orderId: order.id,
+            total: order.total,
+            customerName: order.customerName,
+            customerPhone: order.customerPhone,
+            items: (order.items ?? []).map((item) => ({
+              name: itemNameByProductId.get(item.productId) ?? `Produto #${item.productId}`,
+              quantity: item.quantity,
+              price: item.price,
+            })),
+          });
+
+          return { success: true, order };
+        } catch (error) {
+          if (error instanceof TRPCError) throw error;
+          throw new TRPCError({ code: 'INTERNAL_SERVER_ERROR', message: 'Erro ao processar pedido' });
         }
       }),
   }),

@@ -11,6 +11,27 @@
 
 ## 🔐 Credenciais e Variáveis de Ambiente
 
+### Twilio / WhatsApp (Notificações ao Admin)
+Quando um novo pedido é criado via checkout, o sistema envia uma mensagem de WhatsApp para o admin usando o [Twilio](https://www.twilio.com/).
+
+```
+TWILIO_ACCOUNT_SID=ACxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+TWILIO_AUTH_TOKEN=xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+TWILIO_WHATSAPP_FROM=whatsapp:+14155238886
+ADMIN_WHATSAPP_TO=whatsapp:+55XXXXXXXXXXX
+```
+
+| Variável              | Descrição                                                         |
+|-----------------------|-------------------------------------------------------------------|
+| `TWILIO_ACCOUNT_SID`  | Account SID da sua conta Twilio                                   |
+| `TWILIO_AUTH_TOKEN`   | Auth Token da sua conta Twilio                                    |
+| `TWILIO_WHATSAPP_FROM`| Número Twilio habilitado para WhatsApp (ex.: `whatsapp:+14155238886`) |
+| `ADMIN_WHATSAPP_TO`   | Número do admin para receber os alertas (ex.: `whatsapp:+5511999999999`) |
+
+> **Sandbox Twilio (desenvolvimento):** Para testar sem aprovação de número real, use o sandbox `whatsapp:+14155238886` e siga as instruções de [configuração do Sandbox do WhatsApp](https://www.twilio.com/docs/whatsapp/sandbox).
+>
+> ⚠️ Se as variáveis não estiverem configuradas, o sistema registra um aviso (`console.warn`) e **pula o envio** — o checkout continua funcionando normalmente.
+
 ### Mercado Pago (Pagamentos)
 ```
 MERCADO_PAGO_ACCESS_TOKEN=APP_USR-1480824884876324-022313-3460c62c291011c524cabb91ef852350-3222329898
@@ -67,6 +88,12 @@ Na seção **Settings → Secrets** da nova conta, adicione:
 MERCADO_PAGO_ACCESS_TOKEN=APP_USR-1480824884876324-022313-3460c62c291011c524cabb91ef852350-3222329898
 VITE_MERCADO_PAGO_PUBLIC_KEY=APP_USR-992ce204-c55d-479c-876d-31a6c4b6f031
 MERCADO_PAGO_EMAIL=usecoelhobr@gmail.com
+
+# Twilio / WhatsApp (opcional — notificação de novo pedido ao admin)
+TWILIO_ACCOUNT_SID=ACxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+TWILIO_AUTH_TOKEN=xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+TWILIO_WHATSAPP_FROM=whatsapp:+14155238886
+ADMIN_WHATSAPP_TO=whatsapp:+55XXXXXXXXXXX
 ```
 
 ### 3. Configurar Banco de Dados
@@ -104,6 +131,8 @@ usecoelho-site/
 │   ├── payment.ts         # Integração Mercado Pago
 │   ├── email.ts           # Notificações por email
 │   ├── tracking.ts        # Rastreamento de pedidos
+│   ├── services/
+│   │   └── whatsapp.ts    # Notificação WhatsApp ao admin (Twilio)
 │   └── _core/             # Configuração interna
 ├── drizzle/               # Schema e migrações
 │   └── schema.ts          # Definição das tabelas
