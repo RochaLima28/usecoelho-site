@@ -22,13 +22,6 @@ export default function ProductCard({
   onAddToCart,
 }: ProductCardProps) {
   const [isHovered, setIsHovered] = useState(false);
-  const [quantity, setQuantity] = useState(1);
-
-  const handleAddToCart = () => {
-    if (onAddToCart) {
-      onAddToCart(id, quantity);
-    }
-  };
 
   return (
     <div
@@ -85,33 +78,12 @@ export default function ProductCard({
           )}
         </div>
 
-        {/* Quantity and Add to Cart */}
-        <div className="flex gap-2">
-          <div className="flex items-center border border-gray-300 rounded-lg">
-            <button
-              onClick={() => setQuantity(Math.max(1, quantity - 1))}
-              className="px-3 py-2 text-gray-600 hover:text-gray-900 transition-colors"
-            >
-              −
-            </button>
-            <span className="px-4 py-2 text-gray-900 font-medium">
-              {quantity}
-            </span>
-            <button
-              onClick={() => setQuantity(quantity + 1)}
-              className="px-3 py-2 text-gray-600 hover:text-gray-900 transition-colors"
-            >
-              +
-            </button>
-          </div>
-          <button
-            onClick={handleAddToCart}
-            className="flex-1 flex items-center justify-center gap-2 px-4 py-2 bg-gray-900 text-white font-semibold rounded-lg hover:bg-gray-800 transition-colors duration-300"
-          >
-            <ShoppingCart className="w-4 h-4" />
-            Adicionar
+        {/* Link para página de produto */}
+        <Link href={`/produto/${id}`}>
+          <button className="w-full px-4 py-2 bg-gray-900 text-white font-semibold rounded-lg hover:bg-gray-800 transition-colors duration-300">
+            Ver Detalhes
           </button>
-        </div>
+        </Link>
       </div>
     </div>
   );

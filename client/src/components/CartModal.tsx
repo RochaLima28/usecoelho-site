@@ -7,6 +7,7 @@ interface CartItem {
   name: string;
   price: number;
   quantity: number;
+  size?: string;
 }
 
 interface CartModalProps {
@@ -190,6 +191,9 @@ export default function CartModal({
                     <div key={item.id} className="flex items-center gap-4 pb-4 border-b border-gray-200">
                       <div className="flex-1">
                         <h3 className="font-semibold text-gray-900">{item.name}</h3>
+                        {item.size && (
+                          <p className="text-sm text-gray-500">Tamanho: <span className="font-semibold">{item.size}</span></p>
+                        )}
                         <p className="text-gray-600">R$ {item.price.toFixed(2)}</p>
                       </div>
 
