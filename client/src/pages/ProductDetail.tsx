@@ -1,6 +1,8 @@
 import { useState } from 'react';
 import { useRoute } from 'wouter';
 import { ShoppingCart, ArrowLeft, Check } from 'lucide-react';
+import Header from '@/components/Header';
+import CartModal from '@/components/CartModal';
 
 interface Product {
   id: string;
@@ -12,6 +14,13 @@ interface Product {
   color: string;
   description: string;
   benefits: string[];
+}
+
+interface CartItem {
+  id: string;
+  name: string;
+  price: number;
+  quantity: number;
 }
 
 const products: Record<string, Product> = {
@@ -67,14 +76,16 @@ export default function ProductDetail() {
   const [selectedSize, setSelectedSize] = useState<string | null>(null);
   const [quantity, setQuantity] = useState(1);
   const [addedToCart, setAddedToCart] = useState(false);
+  const [cartItems, setCartItems] = useState<CartItem[]>([]);
+  const [showCart, setShowCart] = useState(false);
 
   if (!product) {
     return (
       <div className="min-h-screen flex items-center justify-center">
         <div className="text-center">
-          <h1 className="text-2xl font-bold text-gray-900 mb-4">Produto nao encontrado</h1>
+          <h1 className="text-2xl font-bold text-gray-900 mb-4">Produto não encontrado</h1>
           <a href="/" className="text-blue-600 hover:text-blue-700">
-            Voltar para a pagina inicial
+            Voltar para a página inicial
           </a>
         </div>
       </div>
@@ -86,23 +97,52 @@ export default function ProductDetail() {
       alert('Por favor, selecione um tamanho');
       return;
     }
-    // Aqui você pode adicionar ao carrinho
-    console.log(`Adicionado ao carrinho: ${product.id}, Tamanho: ${selectedSize}, Quantidade: ${quantity}`);
+    
+    const existingItem = cartItems.find(item => item.id === product.id);
+    if (existingItem) {
+      setCartItems(
+        cartItems.map(item =>
+          item.id === product.id
+            ? { ...item, quantity: item.quantity + quantity }
+            : item
+        )
+      );
+    } else {
+      setCartItems([...cartItems, {
+        id: product.id,
+        name: product.name,
+        price: product.price,
+        quantity
+      }]);
+    }
+    
     setAddedToCart(true);
     setTimeout(() => setAddedToCart(false), 2000);
   };
 
+  const handleRemoveFromCart = (productId: string) => {
+    setCartItems(cartItems.filter(item => item.id !== productId));
+  };
+
+  const handleUpdateQuantity = (productId: string, newQuantity: number) => {
+    if (newQuantity <= 0) {
+      handleRemoveFromCart(productId);
+    } else {
+      setCartItems(
+        cartItems.map(item =>
+          item.id === productId ? { ...item, quantity: newQuantity } : item
+        )
+      );
+    }
+  };
+
   return (
     <div className="min-h-screen bg-white">
-      {/* Header */}
-      <div className="bg-white border-b border-gray-200">
-        <div className="max-w-7xl mx-auto px-4 py-4 flex items-center gap-4">
-          <a href="/" className="flex items-center gap-2 text-gray-600 hover:text-gray-900">
-            <ArrowLeft className="w-5 h-5" />
-            Voltar
-          </a>
-        </div>
-      </div>
+      {/* Header com navegação e carrinho */}
+      <Header 
+        cartCount={cartItems.length}
+        onCartClick={() => setShowCart(!showCart)}
+      />
 
       {/* Main Content */}
       <div className="max-w-7xl mx-auto px-4 py-12">
@@ -123,7 +163,7 @@ export default function ProductDetail() {
 
             {/* Benefits Banner */}
             <div className="bg-gradient-to-r from-gray-900 to-gray-800 text-white rounded-lg p-6 mb-8">
-              <h2 className="text-2xl font-bold mb-4">Beneficios</h2>
+              <h2 className="text-2xl font-bold mb-4">Benefícios</h2>
               <div className="grid grid-cols-2 gap-4">
                 {product.benefits.map((benefit) => (
                   <div key={benefit} className="flex items-center gap-3">
@@ -137,7 +177,7 @@ export default function ProductDetail() {
             {/* Price */}
             <div className="mb-8">
               <p className="text-4xl font-bold text-gray-900">R$ {product.price.toFixed(2)}</p>
-              <p className="text-gray-600 text-sm mt-2">Preco no atacado: R$ {product.wholesalePrice.toFixed(2)}</p>
+              <p className="text-gray-600 text-sm mt-2">Preço no atacado: R$ {product.wholesalePrice.toFixed(2)}</p>
             </div>
 
             {/* Sizes */}
@@ -204,12 +244,21 @@ export default function ProductDetail() {
 
             {/* Description */}
             <div className="mt-12 pt-8 border-t border-gray-200">
-              <h3 className="text-lg font-semibold text-gray-900 mb-4">Descricao</h3>
+              <h3 className="text-lg font-semibold text-gray-900 mb-4">Descrição</h3>
               <p className="text-gray-600 text-lg leading-relaxed">{product.description}</p>
             </div>
           </div>
         </div>
       </div>
+
+      {/* Cart Modal */}
+      <CartModal
+        isOpen={showCart}
+        onClose={() => setShowCart(false)}
+        items={cartItems}
+        onRemoveItem={handleRemoveFromCart}
+        onUpdateQuantity={handleUpdateQuantity}
+      />
     </div>
   );
 }
