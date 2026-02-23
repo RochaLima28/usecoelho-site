@@ -6,7 +6,6 @@ interface Product {
   price: number;
   wholesalePrice?: number;
   image: string;
-  discount?: number;
   badge?: string;
 }
 
@@ -18,23 +17,28 @@ interface ProductSectionProps {
 
 export default function ProductSection({ title, subtitle, products }: ProductSectionProps) {
   return (
-    <section className="py-16 md:py-24 bg-background">
+    <section className="py-16 md:py-24 bg-background border-t border-border">
       <div className="container">
-        {/* Section header */}
-        <div className="mb-12">
-          <div className="line-accent mb-4"></div>
-          <h2 className="text-4xl md:text-5xl font-bold text-foreground mb-4">
-            {title}
-          </h2>
+        {/* Section Header */}
+        <div className="mb-12 md:mb-16">
+          <div className="flex items-center gap-3 mb-4">
+            <div className="w-12 h-1 bg-gradient-to-r from-amber-500 to-amber-700"></div>
+            <h2
+              className="text-4xl md:text-5xl font-bold text-foreground"
+              style={{ fontFamily: "'Playfair Display', serif" }}
+            >
+              {title}
+            </h2>
+          </div>
           {subtitle && (
-            <p className="text-lg text-foreground/70 max-w-2xl">
+            <p className="text-lg text-muted-foreground max-w-2xl">
               {subtitle}
             </p>
           )}
         </div>
 
-        {/* Products grid */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 md:gap-8">
+        {/* Products Grid */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
           {products.map((product) => (
             <ProductCard key={product.id} {...product} />
           ))}

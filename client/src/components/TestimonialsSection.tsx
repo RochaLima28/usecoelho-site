@@ -1,94 +1,103 @@
 import { Star } from 'lucide-react';
 
-interface Testimonial {
-  id: string;
-  name: string;
-  date: string;
-  rating: number;
-  text: string;
-}
-
-const testimonials: Testimonial[] = [
-  {
-    id: '1',
-    name: 'João Aparecido',
-    date: '21/08/2023',
-    rating: 5,
-    text: 'Camiseta de ótima qualidade, não encolhe. Puro algodão.'
-  },
-  {
-    id: '2',
-    name: 'Lino Junkes',
-    date: '10/10/2023',
-    rating: 5,
-    text: 'Excelente produto. Ótimo acabamento. Ótima modelagem. Preço benefício bastante justo. Ótimo atendimento. Chegou antes do prazo.'
-  },
-  {
-    id: '3',
-    name: 'Victor Campos',
-    date: '24/05/2024',
-    rating: 5,
-    text: 'Exatamente como nas fotos. Tenho 1,82m e 72 Kg, o tamanho M ficou perfeito.'
-  },
-  {
-    id: '4',
-    name: 'Joel de Moraes Guimarães',
-    date: '19/04/2024',
-    rating: 5,
-    text: 'Tecido ótimo, produto muito bom, recomendo'
-  }
-];
-
 export default function TestimonialsSection() {
+  const testimonials = [
+    {
+      name: 'Marina Silva',
+      role: 'Proprietária de Loja',
+      text: 'Excelente qualidade e preços competitivos. Meus clientes adoram as camisetas UseCoelho!',
+      rating: 5,
+      avatar: '👩‍💼'
+    },
+    {
+      name: 'João Santos',
+      role: 'Influenciador Digital',
+      text: 'O conforto e o design são incríveis. Recomendo para todos os meus seguidores!',
+      rating: 5,
+      avatar: '👨‍💼'
+    },
+    {
+      name: 'Ana Costa',
+      role: 'Vendedora de Moda',
+      text: 'Melhor fornecedor que já trabalhei. Entrega rápida e atendimento impecável.',
+      rating: 5,
+      avatar: '👩‍🎨'
+    },
+    {
+      name: 'Pedro Oliveira',
+      role: 'Empresário',
+      text: 'Qualidade premium com preço justo. UseCoelho é minha primeira escolha!',
+      rating: 5,
+      avatar: '👨‍💼'
+    }
+  ];
+
   return (
-    <section className="py-16 md:py-24 bg-background">
+    <section className="py-16 md:py-24 bg-background border-t border-border">
       <div className="container">
-        {/* Section header */}
-        <div className="mb-12 text-center">
-          <div className="flex justify-center mb-4">
-            <div className="line-accent"></div>
+        {/* Section Header */}
+        <div className="mb-12 md:mb-16 text-center">
+          <div className="flex items-center justify-center gap-3 mb-4">
+            <div className="w-12 h-1 bg-gradient-to-r from-amber-500 to-amber-700"></div>
+            <h2
+              className="text-4xl md:text-5xl font-bold text-foreground"
+              style={{ fontFamily: "'Playfair Display', serif" }}
+            >
+              O Que Dizem Sobre Nós
+            </h2>
+            <div className="w-12 h-1 bg-gradient-to-l from-amber-500 to-amber-700"></div>
           </div>
-          <h2 className="text-4xl md:text-5xl font-bold text-foreground mb-4">
-            O que Nossos Clientes Dizem
-          </h2>
-          <p className="text-lg text-foreground/70 max-w-2xl mx-auto">
-            Confira os depoimentos de clientes satisfeitos com nossos produtos e serviço
+          <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
+            Milhares de clientes satisfeitos confiam na UseCoelho
           </p>
         </div>
 
-        {/* Testimonials grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8">
-          {testimonials.map((testimonial) => (
+        {/* Testimonials Grid */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+          {testimonials.map((testimonial, idx) => (
             <div
-              key={testimonial.id}
-              className="p-6 md:p-8 bg-secondary rounded-lg border border-border hover:border-accent transition-colors duration-300"
+              key={idx}
+              className="p-6 bg-card border border-border rounded-lg hover:border-amber-500/50 transition-all duration-300 group"
             >
-              {/* Stars */}
+              {/* Rating */}
               <div className="flex gap-1 mb-4">
-                {Array.from({ length: testimonial.rating }).map((_, i) => (
+                {[...Array(testimonial.rating)].map((_, i) => (
                   <Star
                     key={i}
-                    className="w-4 h-4 fill-accent text-accent"
+                    className="w-4 h-4 fill-amber-500 text-amber-500"
                   />
                 ))}
               </div>
 
               {/* Text */}
-              <p className="text-foreground/80 mb-6 leading-relaxed">
+              <p className="text-foreground mb-6 leading-relaxed text-sm">
                 "{testimonial.text}"
               </p>
 
               {/* Author */}
-              <div className="border-t border-border pt-4">
-                <p className="font-semibold text-foreground">
-                  {testimonial.name}
-                </p>
-                <p className="text-sm text-muted-foreground">
-                  {testimonial.date}
-                </p>
+              <div className="flex items-center gap-3">
+                <div className="w-10 h-10 rounded-full bg-gradient-to-br from-amber-400 to-amber-600 flex items-center justify-center text-lg">
+                  {testimonial.avatar}
+                </div>
+                <div>
+                  <p className="font-semibold text-foreground text-sm">
+                    {testimonial.name}
+                  </p>
+                  <p className="text-xs text-muted-foreground">
+                    {testimonial.role}
+                  </p>
+                </div>
               </div>
             </div>
           ))}
+        </div>
+
+        {/* Bottom CTA */}
+        <div className="mt-12 text-center">
+          <p className="text-muted-foreground mb-4">Junte-se a milhares de clientes satisfeitos</p>
+          <button className="px-8 py-4 bg-gradient-to-r from-amber-500 to-amber-700 text-white font-semibold tracking-wider uppercase rounded-lg hover:shadow-lg hover:shadow-amber-500/50 transition-all duration-300 transform hover:scale-105">
+            Fazer Primeiro Pedido
+          </button>
         </div>
       </div>
     </section>
