@@ -15,26 +15,28 @@ export default function Header() {
       <nav className="container flex items-center justify-between py-4">
         {/* Logo */}
         <div className="flex items-center gap-3">
-          <img 
-            src="https://files.manuscdn.com/user_upload_by_module/session_file/310519663334899587/hjqTfFXmaGgynfhc.png" 
-            alt="UseCoelho" 
-            className="h-10 w-10"
-          />
-          <span className="text-2xl font-bold font-display">UseCoelho</span>
+          <div className="p-2.5 bg-accent rounded-lg hover:opacity-90 transition-opacity">
+            <img 
+              src="https://files.manuscdn.com/user_upload_by_module/session_file/310519663334899587/hjqTfFXmaGgynfhc.png" 
+              alt="UseCoelho" 
+              className="h-12 w-12"
+            />
+          </div>
+          <div className="flex flex-col leading-tight">
+            <span className="text-xs font-semibold text-accent tracking-widest uppercase">Use</span>
+            <span className="text-3xl font-bold" style={{fontFamily: "'Playfair Display', serif"}}>Coelho</span>
+          </div>
         </div>
 
         {/* Desktop Navigation */}
         <div className="hidden md:flex items-center gap-8">
-          <a href="#" className="text-foreground hover:text-accent transition-colors duration-300">
+          <a href="#" className="text-foreground hover:text-accent transition-colors duration-300 font-medium">
             Mais Vendidos
           </a>
-          <a href="#" className="text-foreground hover:text-accent transition-colors duration-300">
+          <a href="#" className="text-foreground hover:text-accent transition-colors duration-300 font-medium">
             Masculino
           </a>
-          <a href="#" className="text-foreground hover:text-accent transition-colors duration-300">
-            Feminino
-          </a>
-          <a href="#" className="text-foreground hover:text-accent transition-colors duration-300">
+          <a href="#" className="text-foreground hover:text-accent transition-colors duration-300 font-medium">
             Coleção
           </a>
         </div>
@@ -65,16 +67,13 @@ export default function Header() {
       {isMenuOpen && (
         <div className="md:hidden border-t border-border bg-secondary">
           <div className="container py-4 flex flex-col gap-4">
-            <a href="#" className="text-foreground hover:text-accent transition-colors">
+            <a href="#" className="text-foreground hover:text-accent transition-colors font-medium">
               Mais Vendidos
             </a>
-            <a href="#" className="text-foreground hover:text-accent transition-colors">
+            <a href="#" className="text-foreground hover:text-accent transition-colors font-medium">
               Masculino
             </a>
-            <a href="#" className="text-foreground hover:text-accent transition-colors">
-              Feminino
-            </a>
-            <a href="#" className="text-foreground hover:text-accent transition-colors">
+            <a href="#" className="text-foreground hover:text-accent transition-colors font-medium">
               Coleção
             </a>
           </div>

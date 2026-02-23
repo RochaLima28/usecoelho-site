@@ -9,33 +9,33 @@ export default function Home() {
   const bestsellerProducts = [
     {
       id: '1',
-      name: 'Camiseta Masculina Básica Lisa Preta',
+      name: 'Camiseta Casual Básica Preta',
       price: 25.90,
       wholesalePrice: 20.72,
-      image: 'https://private-us-east-1.manuscdn.com/sessionFile/0r6jkvqawVn7w6BI00vhuD/sandbox/w3EfzujVhf9Ir1EYyWGT7Y-img-1_1771857939000_na1fn_aGVyby1jYW1pc2V0YQ.png?x-oss-process=image/resize,w_1920,h_1920/format,webp/quality,q_80',
+      image: 'https://private-us-east-1.manuscdn.com/sessionFile/0r6jkvqawVn7w6BI00vhuD/sandbox/2TtbtY53PAG1z4eb3KadEU-img-1_1771858604000_na1fn_Y2FtaXNldGEtcHJldGEtY2FzdWFs.png?x-oss-process=image/resize,w_1920,h_1920/format,webp/quality,q_80',
       badge: 'Mais Vendido'
     },
     {
       id: '2',
-      name: 'Camiseta Masculina Básica Lisa Azul Marinho',
+      name: 'Camiseta Casual Básica Azul Marinho',
       price: 25.90,
       wholesalePrice: 20.72,
-      image: 'https://private-us-east-1.manuscdn.com/sessionFile/0r6jkvqawVn7w6BI00vhuD/sandbox/w3EfzujVhf9Ir1EYyWGT7Y-img-1_1771857939000_na1fn_aGVyby1jYW1pc2V0YQ.png?x-oss-process=image/resize,w_1920,h_1920/format,webp/quality,q_80',
+      image: 'https://private-us-east-1.manuscdn.com/sessionFile/0r6jkvqawVn7w6BI00vhuD/sandbox/2TtbtY53PAG1z4eb3KadEU-img-2_1771858603000_na1fn_Y2FtaXNldGEtYXp1bC1jYXN1YWw.png?x-oss-process=image/resize,w_1920,h_1920/format,webp/quality,q_80',
       badge: 'Mais Vendido'
     },
     {
       id: '3',
-      name: 'Jaqueta Corta Vento Masculina Com Zíper Preto',
-      price: 54.70,
-      wholesalePrice: 43.76,
-      image: 'https://private-us-east-1.manuscdn.com/sessionFile/0r6jkvqawVn7w6BI00vhuD/sandbox/w3EfzujVhf9Ir1EYyWGT7Y-img-1_1771857939000_na1fn_aGVyby1jYW1pc2V0YQ.png?x-oss-process=image/resize,w_1920,h_1920/format,webp/quality,q_80'
+      name: 'Camiseta Casual Preta - Corte Moderno',
+      price: 29.90,
+      wholesalePrice: 23.92,
+      image: 'https://private-us-east-1.manuscdn.com/sessionFile/0r6jkvqawVn7w6BI00vhuD/sandbox/2TtbtY53PAG1z4eb3KadEU-img-3_1771858606000_na1fn_Y2FtaXNldGEtcHJldGEtbGF0ZXJhbA.png?x-oss-process=image/resize,w_1920,h_1920/format,webp/quality,q_80'
     },
     {
       id: '4',
-      name: 'Camiseta Dryfit Masculina - Preto',
-      price: 26.01,
-      wholesalePrice: 20.81,
-      image: 'https://private-us-east-1.manuscdn.com/sessionFile/0r6jkvqawVn7w6BI00vhuD/sandbox/w3EfzujVhf9Ir1EYyWGT7Y-img-1_1771857939000_na1fn_aGVyby1jYW1pc2V0YQ.png?x-oss-process=image/resize,w_1920,h_1920/format,webp/quality,q_80'
+      name: 'Camiseta Casual Azul - Corte Moderno',
+      price: 29.90,
+      wholesalePrice: 23.92,
+      image: 'https://private-us-east-1.manuscdn.com/sessionFile/0r6jkvqawVn7w6BI00vhuD/sandbox/2TtbtY53PAG1z4eb3KadEU-img-4_1771858614000_na1fn_Y2FtaXNldGEtYXp1bC1sYXRlcmFs.png?x-oss-process=image/resize,w_1920,h_1920/format,webp/quality,q_80'
     }
   ];
 
@@ -73,31 +73,31 @@ export default function Home() {
   const oversizedProducts = [
     {
       id: '9',
-      name: 'Camiseta Masculina Oversized Preta',
+      name: 'Camiseta Casual Oversized Preta',
       price: 33.21,
       wholesalePrice: 26.57,
-      image: 'https://private-us-east-1.manuscdn.com/sessionFile/0r6jkvqawVn7w6BI00vhuD/sandbox/w3EfzujVhf9Ir1EYyWGT7Y-img-1_1771857939000_na1fn_aGVyby1jYW1pc2V0YQ.png?x-oss-process=image/resize,w_1920,h_1920/format,webp/quality,q_80'
+      image: 'https://private-us-east-1.manuscdn.com/sessionFile/0r6jkvqawVn7w6BI00vhuD/sandbox/2TtbtY53PAG1z4eb3KadEU-img-1_1771858604000_na1fn_Y2FtaXNldGEtcHJldGEtY2FzdWFs.png?x-oss-process=image/resize,w_1920,h_1920/format,webp/quality,q_80'
     },
     {
       id: '10',
-      name: 'Camiseta Masculina Oversized Marrom',
+      name: 'Camiseta Casual Oversized Azul',
       price: 33.21,
       wholesalePrice: 26.57,
-      image: 'https://private-us-east-1.manuscdn.com/sessionFile/0r6jkvqawVn7w6BI00vhuD/sandbox/w3EfzujVhf9Ir1EYyWGT7Y-img-1_1771857939000_na1fn_aGVyby1jYW1pc2V0YQ.png?x-oss-process=image/resize,w_1920,h_1920/format,webp/quality,q_80'
+      image: 'https://private-us-east-1.manuscdn.com/sessionFile/0r6jkvqawVn7w6BI00vhuD/sandbox/2TtbtY53PAG1z4eb3KadEU-img-2_1771858603000_na1fn_Y2FtaXNldGEtYXp1bC1jYXN1YWw.png?x-oss-process=image/resize,w_1920,h_1920/format,webp/quality,q_80'
     },
     {
       id: '11',
-      name: 'Camiseta Masculina Oversized Mostarda',
-      price: 33.21,
-      wholesalePrice: 26.57,
-      image: 'https://private-us-east-1.manuscdn.com/sessionFile/0r6jkvqawVn7w6BI00vhuD/sandbox/w3EfzujVhf9Ir1EYyWGT7Y-img-1_1771857939000_na1fn_aGVyby1jYW1pc2V0YQ.png?x-oss-process=image/resize,w_1920,h_1920/format,webp/quality,q_80'
+      name: 'Camiseta Casual Oversized Preta Premium',
+      price: 37.90,
+      wholesalePrice: 30.32,
+      image: 'https://private-us-east-1.manuscdn.com/sessionFile/0r6jkvqawVn7w6BI00vhuD/sandbox/2TtbtY53PAG1z4eb3KadEU-img-3_1771858606000_na1fn_Y2FtaXNldGEtcHJldGEtbGF0ZXJhbA.png?x-oss-process=image/resize,w_1920,h_1920/format,webp/quality,q_80'
     },
     {
       id: '12',
-      name: 'Camiseta Masculina Oversized Branca',
-      price: 33.21,
-      wholesalePrice: 26.57,
-      image: 'https://private-us-east-1.manuscdn.com/sessionFile/0r6jkvqawVn7w6BI00vhuD/sandbox/w3EfzujVhf9Ir1EYyWGT7Y-img-1_1771857939000_na1fn_aGVyby1jYW1pc2V0YQ.png?x-oss-process=image/resize,w_1920,h_1920/format,webp/quality,q_80'
+      name: 'Camiseta Casual Oversized Azul Premium',
+      price: 37.90,
+      wholesalePrice: 30.32,
+      image: 'https://private-us-east-1.manuscdn.com/sessionFile/0r6jkvqawVn7w6BI00vhuD/sandbox/2TtbtY53PAG1z4eb3KadEU-img-4_1771858614000_na1fn_Y2FtaXNldGEtYXp1bC1sYXRlcmFs.png?x-oss-process=image/resize,w_1920,h_1920/format,webp/quality,q_80'
     }
   ];
 
@@ -117,7 +117,7 @@ export default function Home() {
           products={moletonProducts}
         />
         <ProductSection
-          title="Coleção Oversized"
+          title="Coleção Casual"
           subtitle="Corte amplo e moderno para um visual descontraído"
           products={oversizedProducts}
         />
