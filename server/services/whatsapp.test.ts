@@ -80,8 +80,8 @@ describe("sendAdminNewOrderWhatsApp", () => {
   it("logs a warning and skips send when Twilio env vars are missing", async () => {
     delete process.env.TWILIO_ACCOUNT_SID;
     delete process.env.TWILIO_AUTH_TOKEN;
-    delete process.env.TWILIO_WHATSAPP_FROM;
-    delete process.env.ADMIN_WHATSAPP_TO;
+    delete process.env.TWILIO_WHATSAPP_NUMBER;
+    delete process.env.OWNER_WHATSAPP_NUMBER;
 
     const warnSpy = vi.spyOn(console, "warn").mockImplementation(() => {});
 
@@ -95,8 +95,8 @@ describe("sendAdminNewOrderWhatsApp", () => {
   it("calls twilio client.messages.create with correct params", async () => {
     process.env.TWILIO_ACCOUNT_SID = "ACtest";
     process.env.TWILIO_AUTH_TOKEN = "authtoken";
-    process.env.TWILIO_WHATSAPP_FROM = "whatsapp:+14155238886";
-    process.env.ADMIN_WHATSAPP_TO = "whatsapp:+5511999999999";
+    process.env.TWILIO_WHATSAPP_NUMBER = "+5511956852081";
+    process.env.OWNER_WHATSAPP_NUMBER = "+5511956852081";
 
     const mockCreate = vi.fn().mockResolvedValue({ sid: "SMtest123" });
     vi.doMock("twilio", () => ({
@@ -110,16 +110,16 @@ describe("sendAdminNewOrderWhatsApp", () => {
 
     expect(mockCreate).toHaveBeenCalledOnce();
     const callArg = mockCreate.mock.calls[0]?.[0] as Record<string, string>;
-    expect(callArg.from).toBe("whatsapp:+14155238886");
-    expect(callArg.to).toBe("whatsapp:+5511999999999");
+    expect(callArg.from).toBe("whatsapp:+5511956852081");
+    expect(callArg.to).toBe("whatsapp:+5511956852081");
     expect(callArg.body).toContain("Pedido #42");
   });
 
   it("logs error but does NOT throw when Twilio call fails", async () => {
     process.env.TWILIO_ACCOUNT_SID = "ACtest";
     process.env.TWILIO_AUTH_TOKEN = "authtoken";
-    process.env.TWILIO_WHATSAPP_FROM = "whatsapp:+14155238886";
-    process.env.ADMIN_WHATSAPP_TO = "whatsapp:+5511999999999";
+    process.env.TWILIO_WHATSAPP_NUMBER = "+5511956852081";
+    process.env.OWNER_WHATSAPP_NUMBER = "+5511956852081";
 
     const mockCreate = vi.fn().mockRejectedValue(new Error("Twilio API error"));
     vi.doMock("twilio", () => ({

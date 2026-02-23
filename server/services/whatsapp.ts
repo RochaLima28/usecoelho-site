@@ -61,17 +61,17 @@ export function buildAdminOrderMessage(order: OrderNotificationData): string {
 export async function sendAdminNewOrderWhatsApp(
   order: OrderNotificationData
 ): Promise<void> {
-  const { twilioAccountSid, twilioAuthToken, twilioWhatsappFrom, adminWhatsappTo } =
+  const { twilioAccountSid, twilioAuthToken, twilioWhatsappNumber, ownerWhatsappNumber } =
     ENV;
 
-  if (!twilioAccountSid || !twilioAuthToken || !twilioWhatsappFrom || !adminWhatsappTo) {
+  if (!twilioAccountSid || !twilioAuthToken || !twilioWhatsappNumber || !ownerWhatsappNumber) {
     console.warn(
       '[WhatsApp] Variáveis de ambiente Twilio não configuradas. Envio de notificação ignorado.',
       {
         hasSid: Boolean(twilioAccountSid),
         hasToken: Boolean(twilioAuthToken),
-        hasFrom: Boolean(twilioWhatsappFrom),
-        hasTo: Boolean(adminWhatsappTo),
+        hasWhatsappNumber: Boolean(twilioWhatsappNumber),
+        hasOwnerNumber: Boolean(ownerWhatsappNumber),
       }
     );
     return;
@@ -82,8 +82,8 @@ export async function sendAdminNewOrderWhatsApp(
   try {
     const client = twilio(twilioAccountSid, twilioAuthToken);
     const message = await client.messages.create({
-      from: twilioWhatsappFrom,
-      to: adminWhatsappTo,
+      from: `whatsapp:${twilioWhatsappNumber}`,
+      to: `whatsapp:${ownerWhatsappNumber}`,
       body,
     });
     console.log(`[WhatsApp] Notificação enviada ao admin. SID: ${message.sid}`);

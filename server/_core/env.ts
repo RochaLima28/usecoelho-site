@@ -13,6 +13,6 @@ export const ENV = {
   // Twilio / WhatsApp
   twilioAccountSid: process.env.TWILIO_ACCOUNT_SID ?? "",
   twilioAuthToken: process.env.TWILIO_AUTH_TOKEN ?? "",
-  twilioWhatsappFrom: process.env.TWILIO_WHATSAPP_FROM ?? "",
-  adminWhatsappTo: process.env.ADMIN_WHATSAPP_TO ?? "",
+  twilioWhatsappNumber: process.env.TWILIO_WHATSAPP_NUMBER ?? "",
+  ownerWhatsappNumber: process.env.OWNER_WHATSAPP_NUMBER ?? "",
 };
